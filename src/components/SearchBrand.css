@@ -1,0 +1,16 @@
+.search-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-results li {
+  padding: 5px 0; /* Adjust the padding as needed */
+}
+
+.search-result-item {
+  width: 300px; /* Adjust the width as needed */
+  padding: 5px; /* Adjust the padding as needed */
+  border: 2px solid #ccc; /* Optional: Add a border for better separation */
+  margin-bottom: 5px; /* Optional: Add margin between items */
+}
