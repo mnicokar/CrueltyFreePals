@@ -8,7 +8,7 @@ const SearchBrand = () => {
 
   useEffect(() => {
     // Fetch the cruelty-free data when the component mounts
-    fetch("crueltyfreepeta.txt")
+    fetch("CrueltyFreePeta.txt")
       .then((response) => response.text())
       .then((data) => {
         const parsedData = data
