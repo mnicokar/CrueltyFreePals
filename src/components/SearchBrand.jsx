@@ -1,37 +1,34 @@
 import React, { useState, useEffect } from "react";
 import "./SearchBrand.css";
+
 const SearchBrand = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [originalData, setOriginalData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // Fetch the cruelty-free data when the component mounts
-    fetch("CrueltyFreePeta.txt")
-      .then((response) => response.text())
-      .then((data) => {
-        const parsedData = data
-          .split("\n")
-          .filter((line) => line.trim() !== "");
-        setSearchResults(parsedData);
-        setOriginalData(parsedData); // Keep a copy of the original data
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
-  }, []);
+  const fetchBrands = async (query) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/search?query=${query}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setSearchResults(data.map((item) => item.line));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setSearchResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSearch = (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    setSearchTerm(searchTerm);
-    // Filter search results based on the search term
-    const filteredResults = originalData.filter((result) =>
-      result.toLowerCase().includes(searchTerm)
-    );
-    setSearchResults(filteredResults);
+    const newSearchTerm = e.target.value;
+    setSearchTerm(newSearchTerm);
+    fetchBrands(newSearchTerm);
   };
 
   return (
