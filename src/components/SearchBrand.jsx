@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./SearchBrand.css";
 
 const SearchBrand = () => {
@@ -10,7 +10,7 @@ const SearchBrand = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/search?query=${query}`
+        `${import.meta.env.VITE_API_BASE_URL}/search?query=${query}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -25,10 +25,8 @@ const SearchBrand = () => {
     }
   };
 
-  const handleSearch = (e) => {
-    const newSearchTerm = e.target.value;
-    setSearchTerm(newSearchTerm);
-    fetchBrands(newSearchTerm);
+  const handleSearch = () => {
+    fetchBrands(searchTerm);
   };
 
   return (
@@ -38,7 +36,7 @@ const SearchBrand = () => {
         type="text"
         placeholder="Search for a brand..."
         value={searchTerm}
-        onChange={handleSearch}
+        onChange={(e) => setSearchTerm(e.target.value)}
         style={{
           backgroundColor: "#ffffff",
           padding: "10px",
@@ -46,6 +44,20 @@ const SearchBrand = () => {
           border: "1px solid #ccc",
         }}
       />
+      <button
+        onClick={handleSearch}
+        style={{
+          backgroundColor: "#007bff",
+          color: "#ffffff",
+          padding: "10px",
+          borderRadius: "5px",
+          border: "none",
+          marginLeft: "10px",
+          cursor: "pointer",
+        }}
+      >
+        Search
+      </button>
       {loading ? (
         <p>Loading...</p>
       ) : (
